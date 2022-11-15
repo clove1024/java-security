@@ -8,11 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import org.hibernate.annotations.CreationTimestamp;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 @Data
 @Entity
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +24,23 @@ public class User {
     private String password;
     private String role;
     private String email;
+    private String provider;
+    private String providerId;
     @CreationTimestamp
     private Timestamp createDate;
+    
+    @Builder
+    public User(String username, String password, String role, String email, String provider, String providerId,
+            Timestamp createDate) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.email = email;
+        this.provider = provider;
+        this.providerId = providerId;
+        this.createDate = createDate;
+    }
 
-}
+    
+    }
+
