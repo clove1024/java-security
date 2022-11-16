@@ -1,40 +1,30 @@
 package com.example.javasecurity.auth;
 
+
+
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import com.example.javasecurity.model.User;
+import com.example.javasecurity.domain.User;
 
-import lombok.Data;
-@Data
-public class PricipalDetails implements UserDetails, OAuth2User {
+public class PrincipalDetails implements UserDetails {
 
     private User user;
-    private Map<String, Object> attributes;
 
-    public PricipalDetails(User user) {
+    public PrincipalDetails(User user) {
         this.user = user;
     }
 
-    public PricipalDetails(User user, Map<String, Object> attributes) {
-        this.user = user;
-        this.attributes = attributes;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // TODO Auto-generated method stub
         Collection<GrantedAuthority> collect = new ArrayList<>();
         collect.add(new GrantedAuthority() {
-
             @Override
             public String getAuthority() {
-                // TODO Auto-generated method stub
                 return user.getRole();
             }
         });
@@ -76,18 +66,5 @@ public class PricipalDetails implements UserDetails, OAuth2User {
         // TODO Auto-generated method stub
         return true;
     }
-
-    @Override
-    public Map<String, Object> getAttributes() {
-        // TODO Auto-generated method stub
-        return attributes;
-    }
-
-    @Override
-    public String getName() {
-        // TODO Auto-generated method stub
-        return attributes.get("sub").toString();
-    }
-
     
 }
