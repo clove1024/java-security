@@ -4,18 +4,31 @@ package com.example.javasecurity.auth;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import com.example.javasecurity.domain.User;
 
-public class PrincipalDetails implements UserDetails {
+import lombok.Data;
+
+@Data
+public class PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
+    private Map<String, Object> attributes;
 
     public PrincipalDetails(User user) {
         this.user = user;
+    }
+
+    public PrincipalDetails(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
     }
 
 
@@ -65,6 +78,20 @@ public class PrincipalDetails implements UserDetails {
     public boolean isEnabled() {
         // TODO Auto-generated method stub
         return true;
+    }
+
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        // TODO Auto-generated method stub
+        return attributes;
+    }
+
+
+    @Override
+    public String getName() {
+        // TODO Auto-generated method stub
+        return attributes.get("sub").toString();
     }
     
 }
